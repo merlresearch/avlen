@@ -1,0 +1,91 @@
+# Copyright (C) 2022-2023 Mitsubishi Electric Research Laboratories (MERL)
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+BASE_TASK_CONFIG_PATH: "configs/semantic_audionav/savi/mp3d/semantic_audiogoal.yaml"
+TRAINER_NAME: "ddppo"
+NUM_PROCESSES: 6
+SENSORS: ["DEPTH_SENSOR", "RGB_SENSOR"]
+NUM_UPDATES: 3000
+LOG_INTERVAL: 10
+CHECKPOINT_INTERVAL: 50
+VIDEO_OPTION: []
+VISUALIZATION_OPTION: []
+VLN_CKPT_PATH: "data/pretrained_weights/semantic_audionav/savi/vln/vln_ckpt.1.pth"
+# VLN_CKPT_PATH: "data/pretrained_weights/semantic_audionav/savi/vln/ckpt.29.pth"
+# VLN_CKPT_PATH: "data/pretrained_weights/semantic_audionav/savi/vln/ckpt.29_fix_bp.pth"
+
+GOAL_CKPT_PATH: "data/pretrained_weights/semantic_audionav/savi/best_val.pth"
+NUM_DIALOG_STEPS: 3
+REPLAY_STORE: False
+ORACLE_WHEN_QUERIED: True
+QUERY_WITHIN_RADIUS: True
+ALLOW_STOP: False
+
+EVAL:
+  SPLIT: "val"
+  USE_CKPT_CONFIG: True
+
+RL:
+  WITH_QUERY_CONSTRAINT: True
+  WITH_DISTANCE_CONSTRAINT: False
+  CONSECUTIVE_CONSTRAINT_REWARD: True
+  CONSECUTIVE_REWARD: -.5
+  QUERY_REWARD: -.2
+  QUERY_REWARD_DISTANCE: -.2
+  NUM_TOTAL_QUERY: 3
+  SOFT_QUERY_REWARD: False
+  SOFT_QUERY_REWARD_MAX: -1.0
+  SUCCESS_REWARD: 10.0
+  PPO:
+    clip_param: 0.2
+    ppo_epoch: 2
+    num_mini_batch: 2
+    value_loss_coef: 0.5
+    entropy_coef: 0.05
+    lr: 2.5e-4
+    eps: 1e-5
+    max_grad_norm: 0.2
+    # decide the length of history that ppo encodes
+    num_steps: 150
+    hidden_size: 512
+    use_gae: True
+    gamma: 0.99
+    tau: 0.95
+    use_linear_clip_decay: False
+    use_linear_lr_decay: False
+    # window size for calculating the past rewards
+    reward_window_size: 50
+    use_normalized_advantage: False
+    policy_type: "interactive"
+    use_belief_predictor: True
+    use_external_memory: True
+    use_state_memory: True
+    SCENE_MEMORY_TRANSFORMER:
+      memory_size: 150
+      hidden_size: 256
+      nhead: 8
+      num_encoder_layers: 1
+      num_decoder_layers: 1
+      dropout: 0.0
+      dropout_goal: 0.0
+      activation: 'relu'
+      use_pretrained: False
+      pretrained_path: ''
+      freeze_encoders: False
+      pretraining: True
+    BELIEF_PREDICTOR:
+      online_training: True
+      train_encoder: False
+      lr: 1e-3
+      use_label_belief: True
+      use_location_belief: True
+  DDPPO:
+    sync_frac: 0.6
+    distrib_backend: "GLOO"
+    rnn_type: "GRU"
+    num_recurrent_layers: 1
+    backbone: "custom_resnet18"
+    pretrained_weights: ""
+    pretrained: False
+    reset_critic: False

@@ -1,0 +1,26 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+
+Files: .vscode/* images/task_avlen.png
+Copyright: 2023 Mitsubishi Electric Research Laboratories (MERL)
+License: AGPL-3.0-or-later
+
+# Except as noted in the files themselves (modified or written by MERL)
+Files: soundspaces/* ss_baselines/* configs/* res/* scripts/AmbisonicBinauralizer
+Copyright: Facebook, Inc. and its affiliates.
+License: CC-BY-4.0
+
+Files: habitat-lab-dialog/*
+Copyright: Meta Platforms, Inc. and its affiliates.
+License: MIT
+
+Files: ss_baselines/savi/dialog/speaker/*
+Copyright: 2018, Daniel Fried, Ronghang Hu, Volkan Cirik, Anna Rohrbach, Jacob Andreas, Louis-Philippe Morency, Taylor Berg-Kirkpatrick, Kate Saenko, Dan Klein, Trevor Darrell
+License: BSD-2-Clause
+
+Files: ss_baselines/savi/dialog/ques_gen/*
+Copyright: 2019, Ranjay Krishna
+License: MIT
+
+Files: ss_baselines/savi/dialog/speaker/pybind11/*
+Copyright: 2016 Wenzel Jakob <wenzel.jakob@epfl.ch>
+License: BSD-3-Clause
